@@ -1,0 +1,119 @@
+.body{
+    text-align: center;
+    background-image: url("../img/mineimg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+} 
+
+table, tr, td{
+    margin: auto;
+    width: 300px;
+    height: 70px;
+    border-style: none;
+    border-radius: 10px;
+    border-color: rgb(168, 157, 8);
+    text-align: center;
+    background-color: rgb(216, 215, 156);
+    margin-bottom: 30px;
+}
+
+td{
+    width: 20px;
+    height: 20px;
+    border-style: solid;
+}
+
+.btn{
+    background-color: rgb(168, 157, 8);
+    border-style: none;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 70px;
+    width: 50px;
+    font-size: 35px;
+
+}
+
+button:hover {
+    background-color: rgb(216, 215, 156);
+}
+
+.divy{
+    text-align: center;
+    border-radius: 10px;
+    width: 400px;
+    margin: auto;
+    margin-top: 60px;
+    border-style: solid;
+    background-color: rgb(216, 215, 156);
+    border-style: solid;
+    border-color: rgb(102, 102, 105);
+}
+
+.levelBtn{
+    border-radius: 20px;
+    margin-bottom: 40px;
+}
+
+.levelBtn:hover{
+    box-shadow: 9px 14px 24px 4px rgb(102, 102, 105);
+}
+
+.btn1{
+        background-color:rgb(37, 138, 37)
+
+}
+.btn2{
+    background-color: rgb(168, 103, 5);
+}
+.btn3{
+    background-color: rgb(150, 48, 48);
+}
+
+.btnStart{
+    border-radius: 10px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    background-color: rgb(134, 66, 141);
+
+}
+
+h1{
+        margin-bottom: 40px;
+        background-color: rgb(168, 157, 8);
+        border-style: solid;
+        border-color:rgb(102, 102, 105);
+        border-radius: 70px;
+}
+
+h2{
+    background-color: rgb(168, 157, 8);
+    border-style: solid;
+    border-color:rgb(102, 102, 105);
+    border-radius: 70px;
+}
+
+h3{
+    color: brown;
+}
+
+.modal{
+    text-align: center;
+    margin: auto;
+    display: none;
+    background-color: rgb(143, 143, 146);
+    width: 300px;
+    padding: 20px;
+    border: 5px solid rgb(82, 79, 79);
+}
+
+.restart{
+    background-color: rgb(143, 143, 146);
+    width: 100px;
+}
+
+.restart:hover{
+    transition: .4s;
+    width: 300px;
+}
+

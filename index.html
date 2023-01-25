@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Mine Sweeper</title>
+        <link rel="stylesheet" href="css/style.css">
+        
+    </head>
+
+    <body class="body" onload="onInit()">
+
+        
+
+        <div>
+
+            <div class="divy">
+
+                <button class="restart" onClick="onRestart()" onmousemove="movingMouse()" onmouseleave="mouseReleased()">😁</button>
+
+                <h1>Mine Sweeper</h1>
+
+                <h2 class="clock"></h2>
+
+                <h3 class="life">❤❤❤</h3>
+
+      <!-- <button class="btnStart hidden" onclick="onInit()">Start Game</button> -->
+                <table>
+                    <tbody class="board"></tbody>
+                </table>
+            
+                <button class="levelBtn btn1" onclick="changeLevel('easy')">Easy</button>
+                <button class="levelBtn btn2" onclick="changeLevel('medium')">Medium</button>
+                <button class="levelBtn btn3" onclick="changeLevel('hard')">Hard</button>
+    
+            </div>
+                
+            
+
+        </div>
+
+        <div class="modal">
+            <h4 class="userMsg">Hi</h4>
+        </div>
+
+    	<script src="js/main.js"></script>
+        <script src="js/game.js"></script>
+        <script src="js/util.js"></script>
+
+        <footer>
+            <p>Author: Almog Ohayon</p>
+        </footer>
+    </body>
+
+</html>
