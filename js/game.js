@@ -9,8 +9,8 @@ function showAllZeros(elCell, i, j){
     
 
     console.log('Get into the showAllZeros')
-    console.log('i ', i)
-    console.log('j ', j)
+    //console.log('i ', i)
+    //console.log('j ', j)
     if (i < 0 || i > BEGINNER_TABLE - 1 || j < 0 || j > BEGINNER_TABLE - 1) return; // check for bounds
 
         var elNextCell1 = document.querySelector(`[data-i="${i+1}"][data-j="${j}"]`)
@@ -22,7 +22,7 @@ function showAllZeros(elCell, i, j){
             console.log('Get into the showAllZeros and IF inside')
             gBoard[i][j].isShown = true;
             elCell.innerText = ' '
-            //ShowNegs(i, j, elCell)
+            ShowNegs(i, j, elCell)
             showAllZeros(elNextCell1, (i+1), j );
             showAllZeros(elNextCell2, (i-1), j );
             showAllZeros(elNextCell3, i, (j-1) );
@@ -34,8 +34,6 @@ function showAllZeros(elCell, i, j){
 
 function openModal(){
     var elModal = document.querySelector('.modal')
-    //var elBtn = document.querySelector('.restart')
-    //elBtn.style.display = 'block'
     elModal.innerText = 'Winner! 😍'
     elModal.style.display = 'block'
 }
@@ -59,4 +57,5 @@ function movingMouse(){
     var elBtn = document.querySelector('.onClick')
     elBtn.pointer = 'none'
 }*/
+
 

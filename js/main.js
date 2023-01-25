@@ -8,6 +8,8 @@ const MINE = '💣'
 var gBoard
 var gGameInterval
 var gLife = 3
+var gNearZeroI = []
+var gNearZeroJ = []
 
 
 function onInit() {
