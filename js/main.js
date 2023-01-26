@@ -1,22 +1,28 @@
 'use strict'
 
-const BEGINNER_TABLE = 4
-const BEGINNER_MINE = 2
+const FLAG = '🚩'
 const MINE = '💣'
 
 // The Model
 var gBoard
-var gGameInterval
-var gLife = 3
-var gNearZeroI = []
-var gNearZeroJ = []
 
+var gLevel = {SIZE: 4, MINES: 2, FLAGS: 2}
+var gLife = 3
+var gIsHint = false
+var gStartTime = new Date().getTime()
+var gStartClicking = 0
 
 function onInit() {
+    console.log(gLevel.FLAGS)
     gBoard = buildBoard()
     renderBoard(gBoard)
+    gLife = 3
     var elLife = document.querySelector('.life')
     elLife.innerText = '❤❤❤'
+    gStartTime = new Date().getTime()
+    updateFlags()
+    showHints()
+    
     
     //console.log('setMinesNegsCount ',gBoard)
 }
@@ -31,35 +37,37 @@ function buildBoard() {
     }
     return board*/
     var board = [];
-    for (var i = 0; i < BEGINNER_TABLE; i++) {
+    for (var i = 0; i < gLevel.SIZE; i++) {
         board[i] = [];
-        for (var j = 0; j < BEGINNER_TABLE; j++) {
+        for (var j = 0; j < gLevel.SIZE; j++) {
             board[i][j] = { minesAroundCount: 0, isShown: false, isMine: false, isMarked: false };
         }
     }
 
-    var randNotDoubled = [-1,-1]
+    var randNotDoubled = [{i: -1, j:-1}]
     
-    for (var i = 0; i < BEGINNER_MINE; i++) {
+    check: for (var i = 0; i < gLevel.MINES; i++) {
 
-        var rndI = getRandomInclusive(0, BEGINNER_TABLE - 1)
-        var rndJ = getRandomInclusive(0, BEGINNER_TABLE - 1)
+        var rndI = getRandomInclusive(0, gLevel.SIZE - 1)
+        var rndJ = getRandomInclusive(0, gLevel.SIZE - 1)
 
-        if(randNotDoubled[0] === rndI && randNotDoubled[1] === rndJ) { //There were some cases that the random i & j are the same so the "if" was created for prevention
-            i = 0
-            continue
+        for (var j = 0; j < randNotDoubled.length; j++) { //There were some cases that the random i & j are the same so this for loop was created for prevention
+            if(randNotDoubled[j].i === rndI && randNotDoubled[j].j === rndJ){
+                i--
+                continue check;
+            }
+            
         }
-        if(i === 0) randNotDoubled[0] = rndI
-        if(i === 0) randNotDoubled[1] = rndJ
+
+        randNotDoubled[i] = {i: rndI, j: rndJ};
 
         board[rndI][rndJ].innerText = MINE //רק עוזר לי לעקוב, אפשר למחוק אחכ
         board[rndI][rndJ].isMine = true
     }
 
     setMinesNegsCount(board)
-    //console.log('setMinesNegsCount ',board)
 
-    console.log('board', board)
+    console.log('board', board) //רק עוזר לי לעקוב, אפשר למחוק אחכ
     return board;
 }
 
@@ -74,7 +82,7 @@ function renderBoard(board) {
             var className = (currCell) ? 'occupied' : ''
             strHTML += `<td class="${className}"
             data-i="${i}" data-j="${j}" oncontextmenu="onCellMarked(this,${i},${j})" onmousedown="mouseRemoved()" onmouseup="mouseReleased()"
-            onclick="onCellClicked(this,${i},${j})">(${i},${j})</td>`
+            onclick="onCellClicked(this,${i},${j})"></td>`
         }
         strHTML += '</tr>\n'
     }
@@ -84,8 +92,8 @@ function renderBoard(board) {
 }
 
 function setMinesNegsCount(board){
-    for (var i = 0; i < BEGINNER_TABLE; i++) {
-        for (var j = 0; j < BEGINNER_TABLE; j++) {
+    for (var i = 0; i < gLevel.SIZE; i++) {
+        for (var j = 0; j < gLevel.SIZE; j++) {
             board[i][j].minesAroundCount = countMineNegs(i, j, board) // countMineNegs > util.js
         }
     }
@@ -93,23 +101,46 @@ function setMinesNegsCount(board){
 
 function onCellClicked(elCell, i, j){  
 
+    if(!gStartClicking){
+        timer()
+    }
+    gStartClicking++
+
+    if(gIsHint && !gBoard[i][j].isShown){
+        showNegs(elCell, i, j)
+        gIsHint = false
+        return
+    }
+
+    if(gBoard[i][j].isShown) return
+
     //console.log('gBoard ',gBoard)
     //console.log('elCell ',elCell)
+
+    if(gBoard[i][j].isMarked){
+        gLevel.FLAGS++
+        gBoard[i][j].isMarked = false
+        updateFlags()
+    }
+
 
     var elLife = document.querySelector('.life')
     
     if(gBoard[i][j].isMine){
+        
         elCell.innerText = MINE
+        elCell.style.background = '#D0C9C0'
         gBoard[i][j].isShown = true
-
-        var elBtn = document.querySelector('.restart')
-        elBtn.innerText = '😫'
+        
+        mineMouse()
         
         gLife--
+
         switch (gLife) {
             case 0:
                 elLife.innerText = 'Game Over';
-                pauseGame()
+                showAllMines()
+                //pauseGame()
                 //gameOver();
                 break;
             case 1:
@@ -120,11 +151,11 @@ function onCellClicked(elCell, i, j){
                 break;
         }
     }else if(gBoard[i][j].minesAroundCount === 0){
-            console.log('Get into the if')
             showAllZeros(elCell, i, j)
 
         }else {
             elCell.innerText = gBoard[i][j].minesAroundCount
+            elCell.style.background = '#D0C9C0'
             gBoard[i][j].isShown = true
         }
     
@@ -154,9 +185,17 @@ window.oncontextmenu = function () {
 
 
 function onCellMarked(elCell, i, j){
-    elCell.innerText = '🚩'
-    gBoard[i][j].isMarked = true
-    checkGameOver()   
+    if(gBoard[i][j].isShown && !gBoard[i][j].isMine) return
+
+    if(gLevel.FLAGS){
+        elCell.innerText = FLAG
+
+        gLevel.FLAGS--
+        gBoard[i][j].isMarked = true
+        updateFlags()
+        
+        checkGameOver()
+    } 
 }
 
 function checkGameOver(){

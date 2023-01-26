@@ -11,7 +11,7 @@
         
     </head>
 
-    <body class="body" onload="onInit()">
+    <body class="body" onload="onInit()" oncontextmenu="return false;">
 
         
 
@@ -23,11 +23,15 @@
 
                 <h1>Mine Sweeper</h1>
 
-                <h2 class="clock"></h2>
+                <button class="hints hint1" onclick="hint('1')">💡</button>
+                <button class="hints hint2" onclick="hint('2')">💡</button>
+                <button class="hints hint3" onclick="hint('3')">💡</button>
 
-                <h3 class="life">❤❤❤</h3>
+                <h2 class="time"></h2>
 
-      <!-- <button class="btnStart hidden" onclick="onInit()">Start Game</button> -->
+                <h3 class="gameData life">❤❤❤</h3> 
+                <h4 class="gameData flag">2 🚩</h4>
+
                 <table>
                     <tbody class="board"></tbody>
                 </table>
@@ -43,7 +47,7 @@
         </div>
 
         <div class="modal">
-            <h4 class="userMsg">Hi</h4>
+            <h5 class="userMsg">Hi</h5>
         </div>
 
     	<script src="js/main.js"></script>

@@ -35,7 +35,7 @@ function countMineNegs(cellI, cellJ, mat) {
     return mineNegsCount
 }
 
-function ShowNegs(cellI, cellJ, currCell) {
+function expandShown(cellI, cellJ, currCell) {
 
     for (var i = cellI - 1; i <= cellI + 1; i++) {
         if (i < 0 || i >= gBoard.length) continue
@@ -48,10 +48,89 @@ function ShowNegs(cellI, cellJ, currCell) {
             if(gBoard[i][j].minesAroundCount !== 0) {
                 var elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
                 elCell.innerText = gBoard[i][j].minesAroundCount
+                elCell.style.background = '#D0C9C0'
                 gBoard[i][j].isShown = true
+
+                if(gBoard[i][j].isMarked){
+                    gLevel.FLAGS++
+                    updateFlags()
+                }
             }
         }
     }
+}
+
+/*function showNegs(currCell, cellI, cellJ){
+
+    if(gIsHint){
+        if(currCell.isMine){
+            currCell.innerText = MINE
+        }else currCell.innerText = gBoard[cellI][cellJ].minesAroundCount
+    }else currCell.innerText = ' '
+    
+    for (var i = cellI - 1; i <= cellI + 1; i++) {
+        if (i < 0 || i >= gBoard.length) continue
+
+        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+
+            if (j < 0 || j >= gBoard[i].length) continue
+            else if(gBoard[i][j].isShown) continue
+            else if(gIsHint){
+                var elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
+                if(gBoard[i][j].isMine){
+                    elCell.innerText = MINE
+                }else elCell.innerText = gBoard[i][j].minesAroundCount
+            }else{
+                var elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
+                elCell.innerText = ' '
+            }
+        }
+    }
+
+}*/
+
+
+//לבדוק למה זה לא עובד
+function showNegs(currCell, cellI, cellJ){
+
+    if(currCell.isMine){
+        currCell.innerText = MINE
+    }else currCell.innerText = gBoard[cellI][cellJ].minesAroundCount
+
+    setTimeout(currCell.innerText = ' ', 2000)
+    
+    
+    for (var i = cellI - 1; i <= cellI + 1; i++) {
+        if (i < 0 || i >= gBoard.length) continue
+
+        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+
+            if (j < 0 || j >= gBoard[i].length) continue
+            else if(gBoard[i][j].isShown) continue
+            
+            var elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
+            if(gBoard[i][j].isMine){
+                elCell.innerText = MINE
+            }else elCell.innerText = gBoard[i][j].minesAroundCount
+
+            setTimeout(elCell.innerText = ' ', 2000)
+            
+        }
+    }
+
+}
+
+function showHints(){
+    gIsHint = false
+
+    var elHint1 = document.querySelector('.hint1')
+    elHint1.innerText = '💡'
+
+    var elHint2 = document.querySelector('.hint2')
+    elHint2.innerText = '💡'
+
+    var elHint3 = document.querySelector('.hint3')
+    elHint3.innerText = '💡'
 }
 
 

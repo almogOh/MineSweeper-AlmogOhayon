@@ -6,9 +6,9 @@
 } 
 
 table, tr, td{
+    width: var(--table-width);
     margin: auto;
-    width: 300px;
-    height: 70px;
+    height: 50px;
     border-style: none;
     border-radius: 10px;
     border-color: rgb(168, 157, 8);
@@ -17,9 +17,15 @@ table, tr, td{
     margin-bottom: 30px;
 }
 
-td{
-    width: 20px;
-    height: 20px;
+/*td{
+    width: 45px;
+    height: 45px;
+    border-style: solid;
+}*/
+
+.occupied{
+    width: 45px;
+    height: 45px;
     border-style: solid;
 }
 
@@ -40,13 +46,12 @@ button:hover {
 
 .divy{
     text-align: center;
-    border-radius: 10px;
-    width: 400px;
+    border-radius: 20px;
+    width: calc(400px + var(--table-width) / 2);
     margin: auto;
     margin-top: 60px;
     border-style: solid;
     background-color: rgb(216, 215, 156);
-    border-style: solid;
     border-color: rgb(102, 102, 105);
 }
 
@@ -63,27 +68,22 @@ button:hover {
         background-color:rgb(37, 138, 37)
 
 }
+
 .btn2{
     background-color: rgb(168, 103, 5);
 }
+
 .btn3{
     background-color: rgb(150, 48, 48);
 }
 
-.btnStart{
-    border-radius: 10px;
-    margin-bottom: 20px;
-    margin-top: 10px;
-    background-color: rgb(134, 66, 141);
-
-}
-
 h1{
-        margin-bottom: 40px;
-        background-color: rgb(168, 157, 8);
-        border-style: solid;
-        border-color:rgb(102, 102, 105);
-        border-radius: 70px;
+    margin-bottom: 40px;
+    margin: auto;
+    background-color: rgb(168, 157, 8);
+    border-style: solid;
+    border-color:rgb(102, 102, 105);
+    border-radius: 70px;
 }
 
 h2{
@@ -93,8 +93,29 @@ h2{
     border-radius: 70px;
 }
 
+.gameData{
+    overflow: hidden;
+    display: inline-block;
+}
+
 h3{
     color: brown;
+}
+
+h4{
+    overflow: hidden;
+    padding-left: 300px;
+}
+
+.hints{
+    border-radius: 50px;
+    width: 30px;
+    height: 30px;
+    margin-top: 20px;
+}
+
+.hints:hover {
+    background-color: rgb(143, 143, 146);
 }
 
 .modal{
@@ -110,10 +131,20 @@ h3{
 .restart{
     background-color: rgb(143, 143, 146);
     width: 100px;
+    margin: auto;
 }
 
 .restart:hover{
     transition: .4s;
     width: 300px;
+}
+
+.time{
+    height: 30px;
+    text-align: center;
+}
+
+:root{
+    --table-width: 200px;
 }
 
