@@ -27,6 +27,7 @@ table, tr, td{
     width: 45px;
     height: 45px;
     border-style: solid;
+    pointer-events: auto;
 }
 
 .btn{
@@ -58,6 +59,7 @@ button:hover {
 .levelBtn{
     border-radius: 20px;
     margin-bottom: 40px;
+    font-family: 'Copperplate';
 }
 
 .levelBtn:hover{
@@ -142,6 +144,28 @@ h4{
 .time{
     height: 30px;
     text-align: center;
+}
+
+.extras{
+    font: italic small-caps bold 16px/2 cursive;
+    border-radius: 20px;
+}
+
+.dark{
+    background-color: #fff;
+}
+
+.mega{
+    pointer-events: auto;
+    background-color: rgb(123, 145, 218);  
+}
+
+.exterminator{
+    background-color: rgb(216, 124, 124);
+}
+
+.safeClick{
+    background-color: rgb(120, 199, 130);
 }
 
 :root{

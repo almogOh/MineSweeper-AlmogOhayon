@@ -48,7 +48,8 @@ function expandShown(cellI, cellJ, currCell) {
             if(gBoard[i][j].minesAroundCount !== 0) {
                 var elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
                 elCell.innerText = gBoard[i][j].minesAroundCount
-                elCell.style.background = '#D0C9C0'
+                if(gIsDarkMode) elCell.style.background = '#333333'
+                else elCell.style.background = '#D0C9C0'
                 gBoard[i][j].isShown = true
 
                 if(gBoard[i][j].isMarked){
@@ -90,15 +91,9 @@ function expandShown(cellI, cellJ, currCell) {
 }*/
 
 
-//לבדוק למה זה לא עובד
 function showNegs(currCell, cellI, cellJ){
 
-    if(currCell.isMine){
-        currCell.innerText = MINE
-    }else currCell.innerText = gBoard[cellI][cellJ].minesAroundCount
-
-    setTimeout(currCell.innerText = ' ', 2000)
-    
+    var counter = 0
     
     for (var i = cellI - 1; i <= cellI + 1; i++) {
         if (i < 0 || i >= gBoard.length) continue
@@ -113,11 +108,20 @@ function showNegs(currCell, cellI, cellJ){
                 elCell.innerText = MINE
             }else elCell.innerText = gBoard[i][j].minesAroundCount
 
-            setTimeout(elCell.innerText = ' ', 2000)
+            gCellsOff[counter] = elCell
+            counter++
             
         }
     }
+}
 
+function cellsoff(){
+
+    for (var i = 0; i < gCellsOff.length; i++) {
+        gCellsOff[i].innerText = ' '
+    }
+
+    gCellsOff = []
 }
 
 function showHints(){
@@ -132,5 +136,16 @@ function showHints(){
     var elHint3 = document.querySelector('.hint3')
     elHint3.innerText = '💡'
 }
+
+function unclickableCells(){
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[i].length; j++) {
+            var elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
+            elCell.style.pointerEvents = 'none';
+        }
+        
+    }
+}
+
 
 

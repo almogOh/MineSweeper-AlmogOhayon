@@ -12,7 +12,7 @@ function onRestart(){
 
 }
 
-//להוסיף הצגת תאים צמודיםv
+
 function showAllZeros(elCell, i, j){
     
 
@@ -33,7 +33,8 @@ function showAllZeros(elCell, i, j){
             }
             gBoard[i][j].isShown = true;
             elCell.innerText = ' '
-            elCell.style.background = '#D0C9C0'
+            if(gIsDarkMode) elCell.style.background = '#333333'
+            else elCell.style.background = '#D0C9C0'
             expandShown(i, j, elCell)
             showAllZeros(elNextCell1, (i+1), j );
             showAllZeros(elNextCell2, (i-1), j );
@@ -97,6 +98,12 @@ function showAllMines(){
 }
 
 function openModal(){
+    clearInterval(gInterval)
+
+    //var elCells = document.querySelector('.occupied')
+    //elCells.style.pointerEvents = "none";
+    unclickableCells()
+
     var elModal = document.querySelector('.modal')
     elModal.innerText = 'Winner! 😍'
     elModal.style.display = 'block'
@@ -158,15 +165,15 @@ function hint(numOfHint){
 
 function timer() {
 
-    var x = setInterval(()=> {
+    gInterval = setInterval(()=> {
 
         // Get todays date and time
         var now = new Date().getTime();
     
-        // Find the distance between now an the count down date
+        // Find the distance between now an the gStartTime
         var distance = now - gStartTime
     
-        // Time calculations for days, hours, minutes and seconds
+        // Time calculations for hours, minutes and seconds
         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -176,15 +183,163 @@ function timer() {
 
     }, 1000);
 
-    /*
-    var Interval = setInterval(function () { 
-        var timer = new Date().getTime() - gStartTime
-
-        var elTime = document.querySelector('.time')
-
-        elTime.innerText = `Timer: ${Math.floor(timer/60000)}:${Math.floor(timer/1000)} `
-    }, 10)*/
 }
+
+function darkMode(){
+    gIsDarkMode = true
+
+    var elDiv = document.querySelector('.divy')
+    elDiv.style.background = 'black'
+    elDiv.style.color = 'white'
+    elDiv.style.borderColor = 'white'
+
+    var elH1 = document.querySelector('h1')
+    elH1.style.background = 'black'
+    elH1.style.borderColor = 'white'
+
+    var elH2 = document.querySelector('h2')
+    elH2.style.background = 'black'
+    elH2.style.borderColor = 'white'
+
+    var elTable = document.querySelector('table')
+    elTable.style.background = 'black'
+
+    var elBtn = document.querySelector('button')
+    elBtn.style.background = 'white'
+
+    var elBtn1 = document.querySelector('.btn1')
+    elBtn1.style.background = 'white'
+
+    var elBtn2 = document.querySelector('.btn2')
+    elBtn2.style.background = 'white'
+
+    var elBtn3 = document.querySelector('.btn3')
+    elBtn3.style.background = 'white'
+    
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[i].length; j++) {
+
+            var elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
+            elCell.style.background = 'black'
+            elCell.style.borderColor = 'white'
+ 
+        }
+    }
+    
+}
+
+function markMegaHint(){
+    gMegaHint = 2
+    console.log('Im In Mega Hint Func!')
+}
+
+function makeMegaHint(i1, j1, i2, j2){
+    var startJ = j1
+    var counter = 0
+
+    console.log('Im In makeMegaHint Func!')
+
+    for (i1; i1 <= i2; i1++) {
+        console.log('Im In the I LOOP')
+        for (j1; j1 <= j2; j1++) {
+            console.log('Im In the J LOOP')
+            var elCell = document.querySelector(`[data-i="${i1}"][data-j="${j1}"]`)
+            console.log(elCell)
+            if(gBoard[i1][j1].isShown) continue
+            gCellsOff[counter] = elCell
+            if(gBoard[i1][j1].isMine) elCell.innerText = MINE
+            else elCell.innerText = gBoard[i1][j1].minesAroundCount
+            counter++
+        }
+        
+        j1 = startJ
+    }
+
+    var elMega = document.querySelector('.mega')
+    elMega.style.pointerEvents = 'none';
+
+}
+
+function exterminator(){
+    if(gLevel.SIZE === 4){
+        alert('This function does not work in Begginers mode')
+        return
+    }
+    var allMines = [{i: -1, j:-1}]
+    var counter = 0
+
+    for (var m = 0; m < gBoard.length; m++) {
+        for (var n = 0; n < gBoard[m].length; n++) {
+            if(gBoard[m][n].isMine){
+                //var elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
+                allMines[counter] = {i: m, j: n};
+                counter++
+            }
+            
+        }
+    }
+
+    for (var m = 0; m < 3; m++) {
+        
+        var rndMine = getRandomInclusive(0, allMines.length - 1)
+        var elCell = document.querySelector(`[data-i="${allMines[rndMine].i}"][data-j="${allMines[rndMine].j}"]`)
+
+        gBoard[allMines[rndMine].i][allMines[rndMine].j].isMine = false
+        gBoard[allMines[rndMine].i][allMines[rndMine].j].innerText = 'Mine Extr' //הערה בשביל שאוכל לעקוב, אפשר למחוק אחכ
+        console.log('Ive EX 1 MINE')
+
+        elCell.innerText = MINE
+
+        gCellsOff[m] = elCell
+
+        gLevel.FLAGS--
+        
+    }
+
+    updateFlags()
+    setTimeout(cellsoff, 2000)
+    setMinesNegsCount(gBoard)
+    console.log(gBoard)
+    
+
+}
+
+function safeClick(){
+    
+    if(!gSafeClick){
+        alert('You dont have any more clicks!')
+        return
+    }
+
+    var allSafes = [{i: -1, j:-1}]
+    var counter = 0
+
+    for (var m = 0; m < gBoard.length; m++) {
+        for (var n = 0; n < gBoard[m].length; n++) {
+            if(!gBoard[m][n].isMine){
+                //var elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
+                allSafes[counter] = {i: m, j: n};
+                counter++
+            }
+            
+        }
+    }
+
+    var rndMine = getRandomInclusive(0, allSafes.length - 1)
+    var elCell = document.querySelector(`[data-i="${allSafes[rndMine].i}"][data-j="${allSafes[rndMine].j}"]`)
+
+    gCellsOff[0] = elCell
+
+    elCell.innerText = '✔'
+
+    gSafeClick--
+
+    setTimeout(cellsoff, 2000)
+    
+
+}
+
+
 
 
 
