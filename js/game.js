@@ -316,7 +316,7 @@ function safeClick(){
 
     for (var m = 0; m < gBoard.length; m++) {
         for (var n = 0; n < gBoard[m].length; n++) {
-            if(!gBoard[m][n].isMine){
+            if(!gBoard[m][n].isMine && !gBoard[m][n].isShown){
                 //var elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`)
                 allSafes[counter] = {i: m, j: n};
                 counter++
